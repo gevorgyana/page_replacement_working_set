@@ -1,29 +1,12 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+
+/** lru on prime factorization*/
 
 public class WorkingSetMaintainer {
 
-    // todo take this somewhere else as it should not be here;
-    public static HashMap<Integer, Integer> prime2Index = new HashMap<>();
-    public static HashMap<Integer, Integer> index2Prime = new HashMap<>();
-    /**this function calculates the next prime given @param currentPrime and caches the information
-     * in 2 tables - prime2Index and index2Prime*/
-    public static int nextPrime(int currentPrime) {
-        if ((index2Prime.get(1 + prime2Index.get(currentPrime))) != null) { // this info is cached - return it
-            return (index2Prime.get(1 + prime2Index.get(currentPrime))); // this is inefficient double method invo-
-            // cation - todo prettify
-        }
-
-        int nextPrime = currentPrime + 2;
-        while (true) {
-            boolean isPrime = true;
-            for (int i = 2; isPrime && i < Math.sqrt(nextPrime) && (isPrime &= ((currentPrime % i == 0))); ++i) {}
-            if (isPrime) {}
-            ++nextPrime;
-        }
-    }
-
     private int workingSetSize;
-    private int workingSetLoad = 0;
     private WorkingSet workingSet = new WorkingSet();
     private SlidingWindow requestsLinkedList;
 
@@ -32,12 +15,19 @@ public class WorkingSetMaintainer {
         this.requestsLinkedList = new SlidingWindow(workingSetSize);
     }
 
-    int getSomeoneNotFromWorkingSet() {
-        int currentPrime = 2;
-        while (!workingSet.isContained(currentPrime)) {
-            currentPrime = nextPrime(currentPrime);
+    void registerNewPage(int page) {
+        requestsLinkedList.processNextPage(page);
+        workingSet.addElement(page);
+    }
+
+    int getSomeoneNotFromWorkingSet(int pageAllocatorHash) {
+        ArrayList<Integer> suspects = PrimeRoutines.primeFactors.get(pageAllocatorHash / workingSet.getHash());
+        // the answer is guaranteed to exist
+        int retval = -1; // it will never return -1!!!!!!!!! java wants me to initialize it!!!!
+        for (int suspected : suspects) {
+            if (workingSet.isContained(suspected)) {retval = suspected; break;}
         }
-        return currentPrime;
-        // so we found a prime that is not in the working set, we will not find the
+        return retval;
+        // so we found a prime that is not in the working set and returned it
     }
 }

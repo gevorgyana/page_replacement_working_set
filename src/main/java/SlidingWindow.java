@@ -16,8 +16,9 @@ import java.util.LinkedList;
  *
  * */
 
+// complete
+
 public class SlidingWindow {
-    private WorkingSet slaveWorkingSet = new WorkingSet();
     private int slidingWindowSize;
     private LinkedList<Integer> requestsSlidingWindow = new LinkedList<> ();
 
@@ -30,7 +31,5 @@ public class SlidingWindow {
         if (requestsSlidingWindow.size() > slidingWindowSize) {
             requestsSlidingWindow.pop();
         }
-
-        slaveWorkingSet.addElement(page);
     }
 }

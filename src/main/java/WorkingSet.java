@@ -7,9 +7,14 @@
  * the same nature - so it is actually multiset
  * */
 
+// complete
 
 public class WorkingSet {
     private int hash;
+
+    public int getHash() {
+        return hash;
+    }
 
     public void addElement(int element) {
         hash *= element;

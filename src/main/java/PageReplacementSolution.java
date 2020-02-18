@@ -18,6 +18,8 @@
  * which element is inside out factorization
  * */
 
+// complete
+
 public class PageReplacementSolution {
     private RequestsFrontend requestsFrontend;
     private int configurationConstant;
@@ -36,7 +38,7 @@ public class PageReplacementSolution {
         // of the algorithm; everything happens here, it is like the lowest frame
         // in backtrace of a program
         int nextPage = requestsFrontend.nextFakePage(); // change this stub method later
-
+        pageAllocator.allocatePage(nextPage);
     }
 
     public static void main(String args[]) {

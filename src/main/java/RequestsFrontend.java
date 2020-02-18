@@ -8,6 +8,8 @@ import java.util.logging.Logger;
  * class
  * */
 
+// complete
+
 public class RequestsFrontend {
     private static int fakePageNum = 0;
 
