@@ -2,24 +2,13 @@ import java.security.InvalidParameterException;
 import java.util.logging.Logger;
 
 /**
- * it is only allowed to add pages so far,
- * you cannot remove them - they can only go away it
- * eviction takes place
- * */
-
-/**
- *
- * small assumption! nobody else apart from this class
- * uses logging facilities; this way we will see clear sequence
- * of actions performed on pages and it all will make sense;
- * internal tooling used to generate this sequence of logs is
+ * small assumption! nobody else apart from this class uses logging facilities; this way we will see clear sequence
+ * of actions performed on pages and it all will make sense; internal tooling used to generate this sequence of logs is
  * not important for simulation purpose!
  * */
 
-// done
-
 public class PageAllocator {
-    private WorkingSetMaintainer workingSetMaintainer; // we need this boy to tell us whom to evict
+    private WorkingSetMaintainer workingSetMaintainer; // we need this to tell us whom to evict
     private int maxSimultaneousPages;
     private int currentLoad = 0; // the amount of pages we currently keep in working set
     private int pageAllocatorHash = 1;
@@ -28,7 +17,10 @@ public class PageAllocator {
             throws InvalidParameterException
     {
         if (maxSimultaneousPages < 2) {
-            throw new InvalidParameterException("maxSimultaneousPages must be >= 2!");
+            throw new InvalidParameterException("maxSimultaneousPages must be >= 2! working set must be of " +
+                    "non-negative size and page allocator must be of size at least 1 + size of working set;" +
+                    "this is needed to guarantee that at any point in time there will be a page that is not in" +
+                    "working set and is allocated (page to be evicted), given that there is need for eviction");
         }
         this.maxSimultaneousPages = maxSimultaneousPages;
         this.workingSetMaintainer = workingSetMaintainer;
@@ -37,7 +29,8 @@ public class PageAllocator {
     void allocatePage(int page) {
         if (currentLoad > maxSimultaneousPages) {
             int pageToBeEvicted = workingSetMaintainer.getSomeoneNotFromWorkingSet(pageAllocatorHash);
-            Logger.getAnonymousLogger().info(String.format("Page #%d has been evicted", pageToBeEvicted));
+            Logger.getAnonymousLogger().info(String.format("Page #%d has been evicted",
+                    PrimeRoutines.primeRepresentation2PageNumber(pageToBeEvicted)));
             pageAllocatorHash /= pageToBeEvicted;
 
             /**
@@ -48,12 +41,7 @@ public class PageAllocator {
         }
         ++currentLoad;
         pageAllocatorHash *= page;
-        Logger.getAnonymousLogger().info(String.format("Page #%d has been allocated;", page));
+        Logger.getAnonymousLogger().info(String.format("Page #%d has been allocated;",
+                PrimeRoutines.primeRepresentation2PageNumber(page)));
     }
-
-    /* todo implement
-    void freePage(int page) {
-        Logger.getAnonymousLogger().info(String.format("Page #d has been freed", page));
-    }
-     */
 }
