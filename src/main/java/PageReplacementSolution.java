@@ -8,21 +8,14 @@
 // complete
 
 public class PageReplacementSolution {
-    private int configurationConstant;
     private RequestsFrontend requestsFrontend;
     private PageAllocator pageAllocator;
     private WorkingSetMaintainer workingSetMaintainer;
 
-    /**
-     * WorkingSetMaintainer and PageAllocator are independently from each other updated to reflect
-     * the current state of the incoming requests; also WorkingSetMaintainer is fed to PageAllocator
-     * via dependency injection
-     * */
     PageReplacementSolution(int configurationConstant) {
-        this.configurationConstant = configurationConstant;
         this.workingSetMaintainer = new WorkingSetMaintainer(configurationConstant);
         this.pageAllocator = new PageAllocator(configurationConstant + 1, workingSetMaintainer);
-        requestsFrontend = new RequestsFrontend();
+        this.requestsFrontend = new RequestsFrontend();
     }
 
     /**

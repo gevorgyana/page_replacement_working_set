@@ -5,7 +5,9 @@ public class RequestsFrontend {
      * apply: pageNumber2PrimeRepresentation(cycle sequence([1, .., 10]))
      * */
     public int nextFakePage() {
-        return PrimeRoutines.pageNumber2PrimeRepresentation((++fakePageNum) % 11 == 0 ? (fakePageNum = 1) : fakePageNum);
+        return PrimeRoutines.
+                pageNumber2PrimeRepresentation
+                        ((++fakePageNum) % 11 == 0 ? (fakePageNum = 1) : fakePageNum);
     }
 
     /**
