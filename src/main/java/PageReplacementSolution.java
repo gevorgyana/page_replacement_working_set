@@ -1,4 +1,18 @@
 /**
+ * todo what happens if we need to store the amount of elements
+ * and then decide on which one to evict - maybe the one that is not currently in the working set
+ * типа что если там будет мультисет, что если воркинг сет это мультисет, а не сет? по книжке это сет, но что будет,
+ * если сделать его мультисетом?????
+ * */
+
+/**
+ * todo provide framework for time measurement
+ * required to finish with a portions of requests
+ * this is related to the whole project rather than to this
+ * class
+ * */
+
+/**
  * Todo try to store all elements in sorted order
  * you will need linear memory, but get constant
  * access time, i really do not know
@@ -9,42 +23,34 @@
  * although we can employ LRU cahce to make use of temporal locality!!!!
  * */
 
-/**
- * This class is supposed to work with prime numbers only!
- * Because there is always one unique way to decompose
- * any number into primes; therefore we can decide quickly (+-, better than searching for
- * the number of ways we could decompose a number into factors, which can be big if they are
- * not primes),
- * which element is inside out factorization
- * */
-
 // complete
 
 public class PageReplacementSolution {
-    private RequestsFrontend requestsFrontend;
     private int configurationConstant;
+    private RequestsFrontend requestsFrontend;
     private PageAllocator pageAllocator;
+    private WorkingSetMaintainer workingSetMaintainer;
 
+    /**
+     * WorkingSetMaintainer and PageAllocator are independently from each other updated to reflect
+     * the current state of the incoming requests; also WorkingSetMaintainer is fed to PageAllocator
+     * via dependency injection
+     * */
     PageReplacementSolution(int configurationConstant) {
         this.configurationConstant = configurationConstant;
+        this.workingSetMaintainer = new WorkingSetMaintainer(configurationConstant);
+        this.pageAllocator = new PageAllocator(configurationConstant + 1, workingSetMaintainer);
         requestsFrontend = new RequestsFrontend();
     }
 
-    public void processNextPageFreeRequest() {
-
-    }
-
-    public void processNextPageAllocationRequest() { // this is the entry point to the logic
-        // of the algorithm; everything happens here, it is like the lowest frame
-        // in backtrace of a program
+    /**
+     * This method is the entry point to the logic of the application;
+     * */
+    public void processNextPageAllocationRequest() {
         int nextPage = requestsFrontend.nextFakePage(); // change this stub method later
-        pageAllocator.allocatePage(nextPage);
+        workingSetMaintainer.registerNewPage(nextPage); // first we register the new page to get a fresh working set
+        pageAllocator.allocatePage(nextPage); // then we process it
     }
 
-    public static void main(String args[]) {
-        PageReplacementSolution pageReplacementSolution = new PageReplacementSolution(2);
-        for (int i = 0; i < 10; ++i) {
-            pageReplacementSolution.processNextPageAllocationRequest();
-        }
-    }
+    /* todo implement public void processNextPageFreeRequest() {}*/
 }

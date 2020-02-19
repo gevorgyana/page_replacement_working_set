@@ -8,15 +8,15 @@ public class WorkingSetMaintainer {
 
     private int workingSetSize;
     private WorkingSet workingSet = new WorkingSet();
-    private SlidingWindow requestsLinkedList;
+    //private SlidingWindow requestsLinkedList;
 
     WorkingSetMaintainer(int workingSetSize) {
         this.workingSetSize = workingSetSize;
-        this.requestsLinkedList = new SlidingWindow(workingSetSize);
+        //this.requestsLinkedList = new SlidingWindow(workingSetSize);
     }
 
     void registerNewPage(int page) {
-        requestsLinkedList.processNextPage(page);
+        //requestsLinkedList.processNextPage(page);
         workingSet.addElement(page);
     }
 

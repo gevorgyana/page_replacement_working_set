@@ -1,24 +1,27 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class PrimeRoutines {
-    public static HashMap<Integer, ArrayList<Integer>> primeFactors;
-    public static HashMap<Integer, Integer> prime2Index = new HashMap<>();
-    public static HashMap<Integer, Integer> index2Prime = new HashMap<>();
-    /**this function calculates the next prime after @param currentPrime and caches the information
-     * in 2 tables - prime2Index and index2Prime*/
-    public static int nextPrime(int currentPrime) {
-        if ((index2Prime.get(1 + prime2Index.get(currentPrime))) != null) { // this info is cached - return it
-            return (index2Prime.get(1 + prime2Index.get(currentPrime))); // this is inefficient double method invo-
-            // cation - todo prettify
-        }
 
-        int nextPrime = currentPrime + 2;
-        while (true) {
-            boolean isPrime = true;
-            for (int i = 2; isPrime && i < Math.sqrt(nextPrime) && (isPrime &= ((currentPrime % i == 0))); ++i) {}
-            if (isPrime) {}
-            ++nextPrime;
+    private static int precalculationLimit = 10;
+    public static HashMap<Integer, ArrayList<Integer>> primeFactors;
+
+    {
+        for (int i = 0; i < precalculationLimit; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if ((primeFactors.get(j).size() == 1) && (i % j == 0)) { // "prime" && "factors"
+                    primeFactors.get(i).add(j);
+                }
+            }
         }
+    }
+
+    public static ArrayList<Integer> primes = new ArrayList<Integer>(Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29));
+
+    public static int pageNumber2PrimeRepresentation(int page) {
+        return primes.get(page - 1);
+    }
+
+    public static int primeRepresentation2PageNumber(int primeRepresentation) {
+        return Collections.binarySearch(primes, primeRepresentation) + 1;
     }
 }

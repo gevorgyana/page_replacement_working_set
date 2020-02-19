@@ -18,6 +18,12 @@ import java.util.LinkedList;
 
 // complete
 
+    /*
+
+    this class is not used at all, i have no idea why it appeared;
+    maybe it will be needed when i turn working set into multiset, but no - it is not
+    needed anyway!
+
 public class SlidingWindow {
     private int slidingWindowSize;
     private LinkedList<Integer> requestsSlidingWindow = new LinkedList<> ();
@@ -33,3 +39,4 @@ public class SlidingWindow {
         }
     }
 }
+*/

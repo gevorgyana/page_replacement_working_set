@@ -10,7 +10,7 @@
 // complete
 
 public class WorkingSet {
-    private int hash;
+    private int hash = 1;
 
     public int getHash() {
         return hash;
