@@ -8,6 +8,7 @@ public final class PrimeRoutines {
         return Collections.binarySearch(primes, primeRepresentation) + 1;
     }
 
+    // # bottleneck # 2 - lru cache is the only reasonable solution here
     public static ArrayList<Integer> primeFactors(int i) {
         ArrayList<Integer> retval = new ArrayList<>();
         for (int suspect : primes) {
