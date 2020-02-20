@@ -42,7 +42,7 @@ public class WorkingSetMaintainer {
         int pageNotFromWorkingSet = -1; // now we need to select somebody from the pageAllocatorHash who is not
         // inside the working set
         for (int suspected : suspects) {
-            if (workingSet.isContained(suspected)) {pageNotFromWorkingSet = suspected; break;}
+            if (!workingSet.isContained(suspected)) {pageNotFromWorkingSet = suspected; break;}
         }
 
         assert (pageNotFromWorkingSet != -1); // this cannot happen

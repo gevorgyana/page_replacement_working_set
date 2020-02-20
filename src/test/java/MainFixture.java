@@ -1,6 +1,3 @@
-import sun.rmi.rmic.Main;
-
-import java.util.LinkedList;
 import java.util.logging.Logger;
 
 /**
@@ -54,11 +51,13 @@ public class MainFixture {
 
     void testPageAllocator() {
         WorkingSetMaintainer workingSetMaintainer = new WorkingSetMaintainer(2);
+        workingSetMaintainer.registerNewPage(3);
+        workingSetMaintainer.registerNewPage(5);
         PageAllocator pageAllocator = new PageAllocator(3, workingSetMaintainer);
-        pageAllocator.allocatePage(1);
         pageAllocator.allocatePage(2);
         pageAllocator.allocatePage(3);
-        pageAllocator.allocatePage(4);
+        pageAllocator.allocatePage(5);
+        pageAllocator.allocatePage(7);
         assert (pageAllocator.getPageAllocatorHash() == 3 * 5 * 7);
     }
 
