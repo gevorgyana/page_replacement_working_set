@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-// @Tested
 public class WorkingSetMaintainer {
 
     private int workingSetSize;
@@ -20,15 +19,15 @@ public class WorkingSetMaintainer {
 
     /**
      * This method remembers the sequence of workingSetSize most recent requests it has seen;
-     * this way, we can get constant time to add/remove an element from/to the list and the hash,
+     * this way, we get constant time to add/remove an element from/to the list and the hash,
      * in exchange for linear space for the FIFO queue of size workingSetSize
      * */
     void registerNewPage(int page) {
         workingSet.addElement(page); // modify the hash
-        temporallyOrderedRequests.add(0, page); // it is the post recent page request so far, it will be discarded after
-                                  // workingSetSize steps!
+        temporallyOrderedRequests.add(0, page); // it is the most recent page request so far, it will be
+        // discarded after workingSetSize steps!
         if (temporallyOrderedRequests.size() == workingSetSize + 1) {
-            workingSet.removeElement(temporallyOrderedRequests.removeLast()); // "clean" the tail
+            workingSet.removeElement(temporallyOrderedRequests.removeLast()); // "clear" the tail
         }
     }
 
@@ -42,21 +41,30 @@ public class WorkingSetMaintainer {
         int pageNotFromWorkingSet = -1; // now we need to select somebody from the pageAllocatorHash who is not
         // inside the working set
 
-
-        // bottleneck # 1 - 1) no reason to cache as there are multiple combinatations of working set and allocated
-        // pages; however, when we see closely, at its worst, working set contains 1 element, allocated pages
-        // n elements, then we get (max - n)th, (max - n + 1)th, ..., (max)th primes multiplied in allocatedpages
-        // hash and it becomes a problem to factor this thing out - so maybe we can see what happens if we
-        // associate a range [l, r] with the hash on this set, and then take some k such that
-        // for some i k * i elements from (max - n)th, (max - n + 1)th, ..., (max)th primes multiplied
-        // go into the range and stay cached, this way, we reduce usage of processor time from linear
-        // O(n) (we would have to try every possiblepage!!!!) to O(k), where k is chosen; space wpuld be
-        // O(n / k); 2) or LRU cache here
+        /**
+         * bottleneck # 1
+         * Possible solutions
+         *
+         * 1) no reason to cache as there are multiple combinations of working set and allocated
+         * pages' hashes; in worst case, working set contains 1 element
+         *     (so the hash looks like p * .. * p workingsetSize times),
+         * allocated pages
+         * n elements, then we get
+         *     (max - n)th, (max - n + 1)th, ..., (max)th primes multiplied in allocatedPages
+         * hash and it becomes a problem to factor this thing out - so maybe we can see what happens if we
+         * associate a range [l, r] with the hash on this set, and then take some k such that
+         * for some i k * i elements from (max - n)th, (max - n + 1)th, ..., (max)th primes multiplied
+         * go into the range and stay cached, this way, we reduce usage of processor time from linear
+         * O(n) (we would have to try every possible page!) to O(k), where k is chosen; space would be
+         * O(n / k);
+         *
+         * 2) LRU cache here
+         * */
         for (int suspected : suspects) {
             if (!workingSet.isContained(suspected)) {pageNotFromWorkingSet = suspected; break;}
         }
 
-        assert (pageNotFromWorkingSet != -1); // this cannot happen
+        assert (pageNotFromWorkingSet != -1); // this cannot happen - there is always someone to be evicted
         return pageNotFromWorkingSet;
     }
 }

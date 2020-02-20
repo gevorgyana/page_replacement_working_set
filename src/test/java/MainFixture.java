@@ -1,15 +1,5 @@
 import java.util.logging.Logger;
 
-/**
- * questions
- *
- * - class initiaization - whatthefuck happended to the static {} code from primesRoutines?
- *
- * - how to restrict PageAllocator from modifying its workingSetMaintainer? How to employ const-correctness in Java
- * like in C++ (const T&) ???
- *
- * */
-
 public class MainFixture {
 
     // @Done
@@ -26,9 +16,8 @@ public class MainFixture {
 
     // @Done
     public void testWorkingSetMaintainerEviction() {
-        // we know it returns the first number that is not in the working set and is inside the pageallocationhash
+        // we know it returns the first number that is not in the working set and is inside the pageAllocatorHash,
         // so create a couple of working sets here manually, then check how they behave
-
         WorkingSetMaintainer maintainer = new WorkingSetMaintainer(2);
         maintainer.registerNewPage(PrimeRoutines.pageNumber2PrimeRepresentation(2));
         maintainer.registerNewPage(PrimeRoutines.pageNumber2PrimeRepresentation(3));
@@ -49,9 +38,8 @@ public class MainFixture {
         Logger.getAnonymousLogger().info("Maintainer discarded the right page");
     }
 
-    // correct usage @Done
+    // @Done shows correct usage
     void testPageAllocator() {
-
         WorkingSetMaintainer workingSetMaintainer = new WorkingSetMaintainer(2);
         workingSetMaintainer.registerNewPage(3);
         workingSetMaintainer.registerNewPage(5);
@@ -72,6 +60,13 @@ public class MainFixture {
 
     public static void main(String args[]) {
         MainFixture fixture = new MainFixture();
+        fixture.testPageAllocator();
+        fixture.testWorkingSetMaintainerEviction();
+        fixture.testWorkingSetMaintainerAddPage();
+
+        // logs from this call show the sequence of
+        // allocation/removal events together with
+        // page numbers
         fixture.generalTestOne();
     }
 }

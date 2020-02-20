@@ -1,8 +1,8 @@
 /**
- * This set stores the product of all elements it contains;
- * So really it should be called implicit set, because
+ * Stores the product of all elements it contains;
+ * So really it should be called implicit set;
  * its interface only allows to check whether a given element
- * is stored by it; its initial purpose is to store prime
+ * is stored by it and add new elements; its initial purpose is to store prime
  * numbers; it is also supposed to store multiple elements of
  * the same nature - so it is actually multiset
  * */

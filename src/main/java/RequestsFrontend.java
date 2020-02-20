@@ -1,9 +1,6 @@
 public class RequestsFrontend {
     private static int fakePageNum = 0;
 
-    /**
-     * apply: pageNumber2PrimeRepresentation(cycle sequence([1, .., 10]))
-     * */
     public int nextFakePage() {
         return PrimeRoutines.
                 pageNumber2PrimeRepresentation

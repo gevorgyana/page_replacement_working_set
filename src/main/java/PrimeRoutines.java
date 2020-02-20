@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.logging.Logger;
 
 public final class PrimeRoutines {
     public static ArrayList<Integer> primes = new ArrayList<Integer>(Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29));
@@ -8,9 +7,9 @@ public final class PrimeRoutines {
         return Collections.binarySearch(primes, primeRepresentation) + 1;
     }
 
-    // remember results of division?? +- - maybe have to do it because division takes so long
+    // +- slow/fast, I do not know - maybe have to cache division results because it takes so long?
 
-    // # bottleneck # 2 - lru cache is the only reasonable solution here
+    // @bottleneck # 2 - lru cache is a reasonable solution here
     public static ArrayList<Integer> primeFactors(int i) {
         ArrayList<Integer> retval = new ArrayList<>();
         for (int suspect : primes) {

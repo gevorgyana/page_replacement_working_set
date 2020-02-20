@@ -1,12 +1,3 @@
-/**
- * todo provide framework for time measurement
- * required to finish with a portions of requests
- * this is related to the whole project rather than to this
- * class
- * */
-
-// complete
-
 public class PageReplacementSolution {
     private RequestsFrontend requestsFrontend;
     private PageAllocator pageAllocator;
@@ -24,6 +15,7 @@ public class PageReplacementSolution {
     public void processNextPageAllocationRequest() {
         int nextPage = requestsFrontend.nextFakePage(); // change this stub method later
         pageAllocator.allocatePage(nextPage); // process it
-        workingSetMaintainer.registerNewPage(nextPage); // register the new page to get a fresh working set for future
+        workingSetMaintainer.registerNewPage(nextPage); // register the new page to get a fresh working set
+        // for future generations
     }
 }
