@@ -50,6 +50,7 @@ public class MainFixture {
     }
 
     void testPageAllocator() {
+
         WorkingSetMaintainer workingSetMaintainer = new WorkingSetMaintainer(2);
         workingSetMaintainer.registerNewPage(3);
         workingSetMaintainer.registerNewPage(5);
