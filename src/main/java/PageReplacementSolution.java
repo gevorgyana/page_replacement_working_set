@@ -23,7 +23,7 @@ public class PageReplacementSolution {
      * */
     public void processNextPageAllocationRequest() {
         int nextPage = requestsFrontend.nextFakePage(); // change this stub method later
-        workingSetMaintainer.registerNewPage(nextPage); // first we register the new page to get a fresh working set
-        pageAllocator.allocatePage(nextPage); // then we process it
+        pageAllocator.allocatePage(nextPage); // process it
+        workingSetMaintainer.registerNewPage(nextPage); // register the new page to get a fresh working set for future
     }
 }

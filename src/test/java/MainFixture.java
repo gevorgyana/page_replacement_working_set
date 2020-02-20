@@ -49,6 +49,7 @@ public class MainFixture {
         Logger.getAnonymousLogger().info("Maintainer discarded the right page");
     }
 
+    // correct usage @Done
     void testPageAllocator() {
 
         WorkingSetMaintainer workingSetMaintainer = new WorkingSetMaintainer(2);
@@ -62,16 +63,15 @@ public class MainFixture {
         assert (pageAllocator.getPageAllocatorHash() == 3 * 5 * 7);
     }
 
-    public static void main(String args[]) {
-        MainFixture fixture = new MainFixture();
-        fixture.testPageAllocator();
-
-
-        /*
+    public void generalTestOne() {
         PageReplacementSolution pageReplacementSolution = new PageReplacementSolution(2);
         for (int i = 0; i < 10; ++i) {
             pageReplacementSolution.processNextPageAllocationRequest();
         }
-         */
+    }
+
+    public static void main(String args[]) {
+        MainFixture fixture = new MainFixture();
+        fixture.generalTestOne();
     }
 }
