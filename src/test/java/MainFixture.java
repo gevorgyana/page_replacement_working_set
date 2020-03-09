@@ -1,3 +1,4 @@
+
 import java.util.logging.Logger;
 
 public class MainFixture {
@@ -38,7 +39,7 @@ public class MainFixture {
         Logger.getAnonymousLogger().info("Maintainer discarded the right page");
     }
 
-    // @Done shows correct usage
+    // todo revisit; no longer a good test
     void testPageAllocator() {
         WorkingSetMaintainer workingSetMaintainer = new WorkingSetMaintainer(2);
         workingSetMaintainer.registerNewPage(3);
@@ -58,11 +59,32 @@ public class MainFixture {
         }
     }
 
+    public void checkNewWorkingSetImplementaton()
+    {
+        WorkingSetMaintainer workingSetMaintainer = new WorkingSetMaintainer(2);
+        workingSetMaintainer.registerNewPage1(1);
+        workingSetMaintainer.registerNewPage1(1);
+        workingSetMaintainer.registerNewPage1(1);
+        workingSetMaintainer = new WorkingSetMaintainer(2);
+        workingSetMaintainer.registerNewPage1(1);
+        workingSetMaintainer.registerNewPage1(2);
+        workingSetMaintainer.registerNewPage1(3);
+        workingSetMaintainer.registerNewPage1(4);
+        workingSetMaintainer.registerNewPage1(1);
+        // workingSetMaintainer.registerNewPage1(2);
+
+        // invariant - at any point in between
+        // these lines the size of working set is 2;
+        // the size of working set is the sum of all counters
+        // it contains
+    }
+
     public static void main(String args[]) {
         MainFixture fixture = new MainFixture();
-        fixture.testPageAllocator();
+        //fixture.testPageAllocator(); this is a bad test; todo revise
         fixture.testWorkingSetMaintainerEviction();
         fixture.testWorkingSetMaintainerAddPage();
+        fixture.checkNewWorkingSetImplementaton();
 
         // logs from this call show the sequence of
         // allocation/removal events together with

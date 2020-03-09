@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+
 public class WorkingSetMaintainer {
 
     private int workingSetSize;
     private LinkedList<Integer> temporallyOrderedRequests = new LinkedList();
     private WorkingSet workingSet = new WorkingSet();
+    private WorkingSet1 workingSet1 = new WorkingSet1();
 
     public LinkedList<Integer> getTemporallyOrderedRequests() {
         LinkedList<Integer> snapshot = new LinkedList<>();
@@ -16,6 +18,19 @@ public class WorkingSetMaintainer {
     }
 
     WorkingSetMaintainer(int workingSetSize) { this.workingSetSize = workingSetSize; }
+
+    void registerNewPage1(int page) {
+        workingSet1.addElement(page);
+        temporallyOrderedRequests.add(0, page); // it is the most recent page request so far, it will be
+        // discarded after workingSetSize steps!
+        if (temporallyOrderedRequests.size() == workingSetSize + 1) {
+            workingSet1.removeElement(temporallyOrderedRequests.removeLast()); // "clear" the tail
+        }
+    }
+
+    int getSomeoneNotFromWorkingSet1() {
+        return workingSet1.removeFirstNotInWorkingSet();
+    }
 
     /**
      * This method remembers the sequence of workingSetSize most recent requests it has seen;

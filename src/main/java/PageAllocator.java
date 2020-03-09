@@ -1,3 +1,5 @@
+
+
 import java.security.InvalidParameterException;
 import java.util.logging.Logger;
 
@@ -5,7 +7,7 @@ public class PageAllocator {
 
     /**
      * we need this to tell us whom to evict, BUT we do not modify
-     * the working set, its update is handled up the call stack!
+     * the working set, its update is handled one level up in the call stack!
      * */
     private WorkingSetMaintainer workingSetMaintainer;
 
@@ -41,15 +43,17 @@ public class PageAllocator {
             return;
         }
         if (currentLoad + 1 > maxSimultaneousPages) {
-            int pageToBeEvicted = workingSetMaintainer.getSomeoneNotFromWorkingSet(pageAllocatorHash);
-            pageAllocatorHash /= pageToBeEvicted;
-            --currentLoad;
+            int pageToBeEvicted = workingSetMaintainer.getSomeoneNotFromWorkingSet1();
+                    // workingSetMaintainer.getSomeoneNotFromWorkingSet(pageAllocatorHash);
+
+            //pageAllocatorHash /= pageToBeEvicted;
+            //--currentLoad;
             Logger.getAnonymousLogger().info(String.format("Page #%d has been evicted",
                     PrimeRoutines.
                             primeRepresentation2PageNumber(pageToBeEvicted)));
         }
         ++currentLoad;
-        pageAllocatorHash *= page;
+        // pageAllocatorHash *= page;
         Logger.getAnonymousLogger().info(String.format("Page #%d has been allocated;",
                 PrimeRoutines.primeRepresentation2PageNumber(page)));
     }
