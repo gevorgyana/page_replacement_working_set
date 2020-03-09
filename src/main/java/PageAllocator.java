@@ -1,28 +1,19 @@
-
-
 import java.security.InvalidParameterException;
+import java.util.HashSet;
 import java.util.logging.Logger;
+
 
 public class PageAllocator {
 
-    /**
-     * we need this to tell us whom to evict, BUT we do not modify
-     * the working set, its update is handled one level up in the call stack!
-     * */
+    // An instance of the class needs this to tell it whom to evict,
+    // (modification of this object is done one level up in the call stack)
     private WorkingSetMaintainer workingSetMaintainer;
 
     private int maxSimultaneousPages;
-    private int currentLoad = 0; // the amount of pages we are currently keeping in working set
+    private int currentLoad = 0; // the amount of pages we are currently
+                                 // keeping in working set
 
-    /**
-     * There can't be 2 or more same elements as this is set, not multiset,
-     * in contrast to the working set, which is multiset actually
-     * */
-    private int pageAllocatorHash = 1;
-
-    int getPageAllocatorHash() {
-        return pageAllocatorHash;
-    }
+    private HashSet<Integer> pagesAllocated = new HashSet<>();
 
     PageAllocator(int maxSimultaneousPages, WorkingSetMaintainer workingSetMaintainer)
             throws InvalidParameterException
@@ -37,24 +28,24 @@ public class PageAllocator {
         this.workingSetMaintainer = workingSetMaintainer;
     }
 
+    boolean pageIsLoaded(int page) {
+        return pagesAllocated.contains(page);
+    }
+
     void allocatePage(int page) {
-        if (pageAllocatorHash % page == 0) {
-            // already stored - the page is in memory now
+        if (pagesAllocated.contains(page)) {
             return;
         }
         if (currentLoad + 1 > maxSimultaneousPages) {
-            int pageToBeEvicted = workingSetMaintainer.getSomeoneNotFromWorkingSet1();
-                    // workingSetMaintainer.getSomeoneNotFromWorkingSet(pageAllocatorHash);
-
-            //pageAllocatorHash /= pageToBeEvicted;
-            //--currentLoad;
+            int pageToBeEvicted = workingSetMaintainer.getSomeoneNotFromWorkingSet();
+            pagesAllocated.remove(pageToBeEvicted);
+            --currentLoad;
             Logger.getAnonymousLogger().info(String.format("Page #%d has been evicted",
-                    PrimeRoutines.
-                            primeRepresentation2PageNumber(pageToBeEvicted)));
+                    pageToBeEvicted));
         }
         ++currentLoad;
-        // pageAllocatorHash *= page;
+        pagesAllocated.add(page);
         Logger.getAnonymousLogger().info(String.format("Page #%d has been allocated;",
-                PrimeRoutines.primeRepresentation2PageNumber(page)));
+                page));
     }
 }

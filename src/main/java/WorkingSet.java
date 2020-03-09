@@ -1,24 +1,45 @@
+import java.util.HashMap;
+import java.util.TreeSet;
+
 /**
- * Stores the product of all elements it contains;
- * So really it should be called implicit set;
- * its interface only allows to check whether a given element
- * is stored by it and add new elements; its initial purpose is to store prime
- * numbers; it is also supposed to store multiple elements of
- * the same nature - so it is actually multiset
+ * this class maintains an internal set of pages ready to be evicted by
+ * page allocator; it does so by watching incoming page requests
  * */
 
 public class WorkingSet {
-    private int hash = 1;
-    public int getHash() {
-        return hash;
+
+    HashMap<Integer, Integer> page2counter = new HashMap<>();
+
+    // it is meant to be empty at the very beginning;
+    // as soon as it is needed it is not empty
+    TreeSet<Integer> evictedPages = new TreeSet<>();
+
+    public void addElement(int page) {
+        if (evictedPages.contains(page)) {
+            evictedPages.remove(page);
+        }
+
+        if (page2counter.containsKey(page)) {
+            int currentCounter = page2counter.get(page);
+            page2counter.replace(page, currentCounter + 1);
+        } else {
+            page2counter.put(page, 1);
+        }
     }
-    public void addElement(int element) { hash *= element; }
-    public boolean isContained(int element) {
-        return (hash % element == 0);
+
+    public void removeElement(Integer last) {
+        int currentIndex = page2counter.get(last);
+        if (currentIndex == 1) {
+            page2counter.remove(last);
+            evictedPages.add(last);
+        } else {
+            page2counter.replace(last, currentIndex - 1);
+        }
     }
-    /**Let's assume that @param element has been previously registered in the set -
-     * todo error handling*/
-    public void removeElement(int element) {
-        hash /= element;
+
+    public int removeFirstNotInWorkingSet() {
+        int retVal = evictedPages.first();
+        evictedPages.remove(evictedPages.first());
+        return retVal;
     }
 }
