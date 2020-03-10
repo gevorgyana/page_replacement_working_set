@@ -1,15 +1,16 @@
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 
 public class WorkingSetMaintainer {
 
     private int workingSetSize;
-    private LinkedList<Integer> temporallyOrderedRequests = new LinkedList();
+    private LinkedList<Integer> recentRequests = new LinkedList<>();
     private WorkingSet workingSet = new WorkingSet();
 
-    public LinkedList<Integer> getTemporallyOrderedRequests() {
+    public LinkedList<Integer> getRecentRequests() {
         LinkedList<Integer> snapshot = new LinkedList<>();
-        for (int e : temporallyOrderedRequests) {
+        for (int e : recentRequests) {
             snapshot.addLast(e);
         }
         return snapshot;
@@ -23,15 +24,13 @@ public class WorkingSetMaintainer {
      * */
     void registerNewPage(int page) {
         workingSet.addElement(page);
-        temporallyOrderedRequests.add(0, page); // it is the
-        // most recent page request so far, it will be discarded
-        // after workingSetSize steps!
-        if (temporallyOrderedRequests.size() == workingSetSize + 1) {
-            workingSet.removeElement(temporallyOrderedRequests.removeLast()); // "clear" the tail
+        recentRequests.add(0, page);
+        if (recentRequests.size() == workingSetSize + 1) {
+            workingSet.removeElement(recentRequests.removeLast());
         }
     }
 
-    int getSomeoneNotFromWorkingSet() {
+    int removeSomeoneNotFromWorkingSet() throws NoSuchElementException {
         return workingSet.removeFirstNotInWorkingSet();
     }
 }

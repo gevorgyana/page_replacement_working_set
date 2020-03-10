@@ -4,8 +4,11 @@ public class PageReplacementSolution {
     private WorkingSetMaintainer workingSetMaintainer;
 
     PageReplacementSolution(int configurationConstant) {
-        this.workingSetMaintainer = new WorkingSetMaintainer(configurationConstant);
-        this.pageAllocator = new PageAllocator(configurationConstant + 1, workingSetMaintainer);
+        this.workingSetMaintainer = new WorkingSetMaintainer
+                (configurationConstant);
+        this.pageAllocator = new PageAllocator
+                (configurationConstant + 1,
+                workingSetMaintainer);
         this.requestsFrontend = new RequestsFrontend();
     }
 

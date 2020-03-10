@@ -2,22 +2,22 @@ import java.security.InvalidParameterException;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
-
 public class PageAllocator {
 
-    // An instance of the class needs this to tell it whom to evict,
-    // (modification of this object is done one level up in the call stack)
+    // modification of this object is done one level up in the call stack,
+    // we can only ask it to give us a page number that is currently not in
+    // the working set, when we need to evict someone
     private WorkingSetMaintainer workingSetMaintainer;
 
     private int maxSimultaneousPages;
     private int currentLoad = 0; // the amount of pages we are currently
-                                 // keeping in working set
+                                 // keeping allocated
 
     private HashSet<Integer> pagesAllocated = new HashSet<>();
 
-    PageAllocator(int maxSimultaneousPages, WorkingSetMaintainer workingSetMaintainer)
-            throws InvalidParameterException
-    {
+    PageAllocator(int maxSimultaneousPages,
+                  WorkingSetMaintainer workingSetMaintainer)
+            throws InvalidParameterException {
         if (maxSimultaneousPages < 2) {
             throw new InvalidParameterException("maxSimultaneousPages must be >= 2! working set must be of " +
                     "non-negative size and page allocator must be of size at least 1 + size of working set;" +
@@ -28,16 +28,12 @@ public class PageAllocator {
         this.workingSetMaintainer = workingSetMaintainer;
     }
 
-    boolean pageIsLoaded(int page) {
-        return pagesAllocated.contains(page);
-    }
-
     void allocatePage(int page) {
         if (pagesAllocated.contains(page)) {
             return;
         }
         if (currentLoad + 1 > maxSimultaneousPages) {
-            int pageToBeEvicted = workingSetMaintainer.getSomeoneNotFromWorkingSet();
+            int pageToBeEvicted = workingSetMaintainer.removeSomeoneNotFromWorkingSet();
             pagesAllocated.remove(pageToBeEvicted);
             --currentLoad;
             Logger.getAnonymousLogger().info(String.format("Page #%d has been evicted",
