@@ -1,0 +1,7 @@
+if Intellij cannot display the
+project, these instructions worked for me
+
+- mark src/test as test directory in
+context menu; src/main as source directory;
+- then Gradle menu appeared on the right,
+and I clicked on reload button;
