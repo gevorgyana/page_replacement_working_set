@@ -38,12 +38,11 @@ really a dependency, but more or
 less is supposed to be in the
 source tree.
 
-task getDependencies() {
-    commandLine './scirpts/get_moss'
-}
+UPDATE
+fileTree did not work, its intended
+use is including jars, not java sources;
+therefore just added MOSS to sources
+of java plugin.
 
-dependencies {
-    implementation fileTree("path")
-}
-
-compileJava.dependsOn(fetchResources)
+Still intellj idea does not see
+the code. This is a bad solution.

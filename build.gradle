@@ -13,8 +13,7 @@ task getDependencies(type: Exec) {
     commandLine './scripts/get_moss_mm.sh'
 }
 
-dependencies {
-    implementation fileTree("./external/moss")
-}
-
 compileJava.dependsOn(getDependencies)
+compileJava {
+    source fileTree(dir: "./external/moss", include: ['*.java'])
+}
