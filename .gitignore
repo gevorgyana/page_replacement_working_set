@@ -1,3 +1,11 @@
 # comment
 build/
 .gradle/
+src/main/java/Common.java
+src/main/java/ControlPanel.java
+src/main/java/Instruction.java
+src/main/java/Kernel.java
+src/main/java/MemoryManagement.java
+src/main/java/Page.java
+src/main/java/PageFault.java
+src/main/java/Virtual2Physical.java

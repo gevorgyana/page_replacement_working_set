@@ -10,10 +10,8 @@ application {
 }
 
 task getDependencies(type: Exec) {
-    commandLine './scripts/get_moss_mm.sh'
+    workingDir = 'scripts'
+    commandLine './get_moss_mm.sh'
 }
 
 compileJava.dependsOn(getDependencies)
-compileJava {
-    source fileTree(dir: "./external/moss", include: ['*.java'])
-}

@@ -46,3 +46,13 @@ of java plugin.
 
 Still intellj idea does not see
 the code. This is a bad solution.
+But it seems like the only
+solution - dependency management
+is not designed to be used with
+java source code, it is used with
+jars.
+
+copy java files into src/main/java
+now, that solves the problem with
+Intellij not being able to see
+the sources.
