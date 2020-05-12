@@ -1,7 +1,49 @@
-if Intellij cannot display the
-project, these instructions worked for me
+If Intellij cannot display the
+project, try to
 
 - mark src/test as test directory in
-context menu; src/main as source directory;
-- then Gradle menu appeared on the right,
-and I clicked on reload button;
+context menu of project window and
+mark src/main as source directory;
+- reload Gradle project by clicking
+on Refresh button after opening Gradle
+tool window;
+
+As MOSS is not a publicly available
+ivy/maven repository and it is not
+distributed with the source code of
+this solution, it is downloaded by
+'scripts/fetch_moss.sh' and is pulled
+by a call to fileTree() in build
+configuration script.
+
+fileTree is lazy, which means it
+will not run until we compile, and
+we also declare that compilation
+must happen after the sources are
+fetched, which works fine.
+
+Other solutions would be:
+- fetch the sources and declare them
+as a local repository by wrapping them
+with ivy/maven manifest (too complex for
+a simple library);
+- declare a flatDir (similar solution,
+almost the same);
+- maintain the source code of the library
+udner version control (which is not
+intersting).
+
+This means that the code is not
+really a dependency, but more or
+less is supposed to be in the
+source tree.
+
+task getDependencies() {
+    commandLine './scirpts/get_moss'
+}
+
+dependencies {
+    implementation fileTree("path")
+}
+
+compileJava.dependsOn(fetchResources)
