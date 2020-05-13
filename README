@@ -41,8 +41,7 @@ source tree.
 UPDATE
 fileTree did not work, its intended
 use is including jars, not java sources;
-therefore just added MOSS to sources
-of java plugin.
+therefore just added MOSS to sources.
 
 Still intellj idea does not see
 the code. This is a bad solution.
