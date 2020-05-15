@@ -1,3 +1,13 @@
+TO LAUNCH THE PROJECT,
+RUN ./gradlew run --args='<configuration_script> <log_file>'
+the same thing as with running from command line,
+gradle takes care of --args and passes them to the application.
+
+
+
+
+
+
 If Intellij cannot display the
 project, try to
 
