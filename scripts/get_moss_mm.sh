@@ -19,5 +19,9 @@ find . -name '*.java' -exec sed -i '/^import [A-Z]/d' {} +
 # there are bugs in the original version
 patch $downloaded/ControlPanel.java $fixes/patch1
 
+# integrate the change to use WorkingSet
+patch $downloaded/Kernel.java $fixes/patchKernel
+patch $downloaded/PageFault.java $fixes/patchPageFault
+
 cd $top_dir/external/moss && \
     cp -f *.java $destination

@@ -1,0 +1,19 @@
+318a319,330
+> 
+>     // Set the size of the working set to be
+>     // ( virtPageNum + 1 ) / 2. When the next
+>     // page is attempted for access, page fault
+>     // fires.
+> 
+>     WorkingSetSingletonAccess.init((virtPageNum + 1) / 2);
+> 
+>     // in the next block, we are filling up the capacity
+>     // of working set with exactly (virtPageNum + 1) / 2
+>     // items.
+> 
+327a340
+>         WorkingSetSingletonAccess.registerPage(i);
+342d354
+< 
+347d358
+< 
